@@ -17,42 +17,32 @@
 # You should have received a copy of the GNU General Public License
 # along with verboten.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'vbot'
-require 'verboten/find_book'
+require 'nokogiri'
+require 'open-uri'
 
 module Verboten
   ##
-  # = VerbotenController
+  # = FindBook
   # Author::    Richard Davis
   # Copyright:: Copyright 2018 Mushaka Solutions
   # License::   GNU Public License 3
   #
-  # Maps command subroutines to message logic.
-  class VerbotenController < Vbot::BotController
-    include Verboten::FindBook
+  # Subroutine to find books on a given page.
+  module FindBook
+    LIBRARY = 'http://im.triggered.help/'
 
-    ##
-    # Executes command subroutines.
-    def exec_command_subroutine(command_hash)
-      rt = command_hash[:reply_to]
-      pm = command_hash[:pm]
-      cmd = command_hash[:command]
-      args = command_hash[:arguments]
+    def search_for_books(term)
+      page = Nokogiri::HTML(open(LIBRARY+'humble/'))
+      links = page.css('a')
+      filtered_links = []
 
-      if cmd.upcase == 'FIND-BOOK'
-        books = search_for_books(args[0])
-        if pm == true
-          "PRIVMSG #{rt} :#{books}\r\n"
-        else
-          "PRIVMSG #{@chan} :#{books}\r\n"
-        end
-      elsif cmd.upcase == 'HOWDY'
-        if pm == true
-          "PRIVMSG #{rt} :Howdy, #{rt}.\r\n"
-        else
-          "PRIVMSG #{@chan} :Howdy, #{rt}.\r\n"
-        end
+      links.each do |link|
+        next unless link['href'].end_with?('.pdf')
+        filtered_links.push("#{LIBRARY}#{link['href'].slice(1..-1)}") if link['href'].downcase.include?(term)
       end
+
+      filtered_links[0..4].join(' | ')
     end
   end
 end
+
