@@ -19,6 +19,7 @@
 
 require 'nokogiri'
 require 'open-uri'
+require 'socket'
 
 module Verboten
   ##
@@ -30,6 +31,8 @@ module Verboten
   # Subroutine to find books on a given page.
   module FindBook
     LIBRARY = 'http://im.triggered.help/'
+    PASTEBIN = 'dailyprog.org'
+    PASTEBIN_PORT = 6969
 
     def search_for_books(args, file_type='pdf')
       if args[0].slice(0, 2) == '--' && args[0].slice(2..9).casecmp('filetype').zero?
@@ -44,10 +47,17 @@ module Verboten
 
       links.each do |link|
         next unless link['href'].end_with?(file_type)
-        filtered_links.push("#{LIBRARY}#{link['href'].slice(1..-1)}") if link['href'].downcase.include?(term)
+        filtered_links.push("#{LIBRARY}#{link['href'].slice(1..-1)}") if link['href'].downcase.include?(term.downcase)
       end
 
-      filtered_links[0..4]
+      if filtered_links.count > 4
+        socket = TCPSocket.open(PASTEBIN, PASTEBIN_PORT)
+        socket.puts filtered_links
+        link = 'More books at: ' + socket.gets
+        filtered_links = filtered_links.take(4).push(link)
+      end
+
+      filtered_links
     end
   end
 end

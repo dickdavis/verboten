@@ -47,6 +47,7 @@ module Verboten
 
       if cmd.casecmp('FIND-BOOKS').zero?
         books = search_for_books(args)
+        return ["PRIVMSG #{reply_to} :#{'Sorry, no books were found for that search term.'}\r\n"] if books.count.zero?
         messages = []
         books.each do |book|
           messages.push(["PRIVMSG #{reply_to} :#{book}\r\n"])
