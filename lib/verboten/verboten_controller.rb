@@ -39,19 +39,21 @@ module Verboten
       cmd = command_hash[:command]
       args = command_hash[:arguments]
 
-      if cmd.upcase == 'FIND-BOOK'
-        books = search_for_books(args[0])
-        if pm == true
-          "PRIVMSG #{rt} :#{books}\r\n"
-        else
-          "PRIVMSG #{@chan} :#{books}\r\n"
+      if pm == true
+        reply_to = rt
+      else
+        reply_to = chan
+      end
+
+      if cmd.casecmp('FIND-BOOKS').zero?
+        books = search_for_books(args)
+        messages = []
+        books.each do |book|
+          messages.push(["PRIVMSG #{reply_to} :#{book}\r\n"])
         end
-      elsif cmd.upcase == 'HOWDY'
-        if pm == true
-          "PRIVMSG #{rt} :Howdy, #{rt}.\r\n"
-        else
-          "PRIVMSG #{@chan} :Howdy, #{rt}.\r\n"
-        end
+        return messages
+      elsif cmd.casecmp('HOWDY').zero?
+        ["PRIVMSG #{reply_to} :Howdy, #{rt}.\r\n"]
       end
     end
   end

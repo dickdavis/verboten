@@ -31,17 +31,23 @@ module Verboten
   module FindBook
     LIBRARY = 'http://im.triggered.help/'
 
-    def search_for_books(term)
+    def search_for_books(args, file_type='pdf')
+      if args[0].slice(0, 2) == '--' && args[0].slice(2..9).casecmp('filetype').zero?
+        file_type = args[0].slice(11..-1)
+        term = args[1]
+      else
+        term = args[0]
+      end
       page = Nokogiri::HTML(open(LIBRARY+'humble/'))
       links = page.css('a')
       filtered_links = []
 
       links.each do |link|
-        next unless link['href'].end_with?('.pdf')
+        next unless link['href'].end_with?(file_type)
         filtered_links.push("#{LIBRARY}#{link['href'].slice(1..-1)}") if link['href'].downcase.include?(term)
       end
 
-      filtered_links[0..4].join(' | ')
+      filtered_links[0..4]
     end
   end
 end
