@@ -1,21 +1,13 @@
-# A note from gbud
-## Next Steps
-* Initiate a git repo with `git init`
-* Run `bundle install` to get the dependencies
-* Write some code!
-* Execute `gem build foobar.gemspec` to build your gem
-* Execute `gem install foobar-0.0.1.gem` to install your gem
-* Share!
 # verboten
 This is an IRC bot written in Ruby that performs various functions.
 
 ## Table of Contents
 * About
+* License
 * Getting started
     * Installation
     * Usage
 * Contributing
-    * Code of Conduct
     * Code Style
     * Documentation
     * Testing
@@ -25,33 +17,45 @@ This is an IRC bot written in Ruby that performs various functions.
 ## About
 This is an IRC bot written in Ruby that performs various functions.
 
-Documentation can be found [here](https://).
-
 ## License
 See `LICENSE` in the project root directory for license information.
 
 ## Getting Started
 ### Installation
-Put installation instructions here.
+To install, execute the following commands:
+```
+git clone git@github.com:d3d1rty/verboten.git
+cd verboten
+gem build verboten.gemspec
+gem install verboten-0.2.0.gem
+```
 
 ### Usage
-Put usage instructions here.
+Execute command `verboten -i` to initialize a config file with information that you provide.
+
+Execute command `verboten -r` to run the bot using the config file that you generated.
+
+The bot responds to either `verboten` or `<>`.
+
+The bot currently know the following commands:
+```
+##
+# Simple test method to see that the bot is working.
+verboten howdy
+
+##
+# Finds books of an optionally provided filetype for a given search term.
+# verboten find-books [--filetype=(pdf|epub|mobi)] [search term]
+verboten find-books --filetype=epub java
+
+
+##
+# Adds a song to the channel queue.
+# Example: verboten play [URL of song to play]
+verboten play https://invidio.us/watch?v=XIkPyUecsnI
+```
 
 ## Contributing
-### Code of Conduct
-All contributions are welcome, but are merged at the discretion of the core
-contributor(s). Contributions to the project will be
-judged on their merits without respect to a contributor's publicly or
-privately held beliefs, opinions, ideology, nationality, ethnicity, or
-demographic. Most communications within the project should be limited to
-project planning, development, bugfixing, or other relevant topics; for
-off-topic discussions, contributors are expected to use good judgement
-and to avoid intentionally abusive behavior. Conflict should be resolved
-at the lowest level possible with minimal disruption to the project. Core
-contributor(s) reserve the right to request that a contributor alter their
-behavior, however, nothing in this code of conduct should be construed in
-such a manner that it infringes upon any contributor's freedom of expression.
-
 ### Code Style
 To keep a consistent code style, it is recommended to use
 [rubocop](https://github.com/bbatsov/rubocop). If you use `vim` and
@@ -89,11 +93,7 @@ Example method comment:
 # This is a method that does something
 ```
 
-Documentation should be regenerated prior to merging any branches into master. The latest
-[documentation](https://d3d1rty.github.io/gbud/) auto-sources off the `docs/` folder on
-the master branch. For more information on RDoc, go
-[here](https://rdoc.github.io/rdoc/index.html).
-
+You can generate documentation using the following rake task.
 ```
 # Run custom rake task to regenerate RDoc documentation
 rake rdoc
@@ -104,10 +104,9 @@ Integration tests should be written for all classes and methods. The test suite
 can be run manually `bundle exec rake test` or automatically using guard `bundle exec guard`.
 
 ## TODO
-List action items here.
+* Make tests...
 
 ## Changelog
-### [Date]
-* Upgraded to version `X.X.X`.
-* List other changes made.
-* ...
+### 2018-11-07
+* Upgraded to version `0.2.0`.
+* Added `play` command.
