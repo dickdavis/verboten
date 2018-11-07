@@ -40,7 +40,7 @@ module Verboten
     ##
     # Queues a song up at tsfw
     def send_song_to_tswf(args)
-      return 'Sorry, you entered an invalid URL. I cannot do anything with this.' unless is_valid_url?(args[0])
+      return 'You entered an invalid URL.' unless is_valid_url?(args[0]) || args[0].casecmp('despacito').zero?
 
       if args[0].casecmp('despacito').zero?
         link = ENDPOINT+'https://invidio.us/watch?v=kJQP7kiw5Fk'
@@ -57,7 +57,7 @@ module Verboten
       if response.code == '200'
         'Song successfully added to the queue.'
       else
-        'The server did not accept this song; probably because it sucks.'
+        'The server rejected this song.'
       end
     end
   end
