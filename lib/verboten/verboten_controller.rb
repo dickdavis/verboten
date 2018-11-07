@@ -19,6 +19,7 @@
 
 require 'vbot'
 require 'verboten/find_book'
+require 'verboten/play'
 
 module Verboten
   ##
@@ -30,6 +31,7 @@ module Verboten
   # Maps command subroutines to message logic.
   class VerbotenController < Vbot::BotController
     include Verboten::FindBook
+    include Verboten::Play
 
     ##
     # Executes command subroutines.
@@ -45,16 +47,23 @@ module Verboten
         reply_to = chan
       end
 
+      return ["PRIVMSG #{reply_to} :#{'No command given.'}\r\n"] if cmd.nil?
+
       if cmd.casecmp('FIND-BOOKS').zero?
         books = search_for_books(args)
-        return ["PRIVMSG #{reply_to} :#{'Sorry, no books were found for that search term.'}\r\n"] if books.count.zero?
+        return ["PRIVMSG #{reply_to} :#{'No books were found for that search term.'}\r\n"] if books.count.zero?
         messages = []
         books.each do |book|
           messages.push(["PRIVMSG #{reply_to} :#{book}\r\n"])
         end
         return messages
+      elsif cmd.casecmp('PLAY').zero? || cmd.include?('http') || cmd.casecmp('despacito').zero?
+        args[0] = cmd if cmd.include?('http') || cmd.casecmp('despacito').zero?
+        ["PRIVMSG #{reply_to} :#{send_song_to_tswf(args)}\r\n"]
       elsif cmd.casecmp('HOWDY').zero?
         ["PRIVMSG #{reply_to} :Howdy, #{rt}.\r\n"]
+      else
+        ["PRIVMSG #{reply_to} :I do not recognize that command. Check here for information on what I can do: https://github.com/d3d1rty/verboten.\r\n"]
       end
     end
   end

@@ -23,7 +23,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |s|
   s.name          = 'verboten'
-  s.version       = '0.1.0'
+  s.version       = '0.2.0'
   s.platform      = Gem::Platform::RUBY
   s.authors       = ['Richard Davis']
   s.email         = 'rvdavis@member.fsf.org'
@@ -39,6 +39,6 @@ Gem::Specification.new do |s|
 
   s.test_files    = Dir['test/**/*']
   s.require_path  = ['lib']
-  s.add_runtime_dependency 'vbot', '~> 0.2.1'
+  s.add_runtime_dependency 'vbot', '~> 0.3.1'
   s.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.8'
 end
