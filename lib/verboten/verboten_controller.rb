@@ -19,6 +19,7 @@
 
 require 'vbot'
 require 'verboten/find_book'
+require 'verboten/play'
 
 module Verboten
   ##
@@ -30,6 +31,7 @@ module Verboten
   # Maps command subroutines to message logic.
   class VerbotenController < Vbot::BotController
     include Verboten::FindBook
+    include Verboten::Play
 
     ##
     # Executes command subroutines.
@@ -53,8 +55,13 @@ module Verboten
           messages.push(["PRIVMSG #{reply_to} :#{book}\r\n"])
         end
         return messages
+      elsif cmd.casecmp('PLAY').zero? || cmd.include?('http')
+        args[0] = cmd if cmd.include?('http')
+        ["PRIVMSG #{reply_to} :#{send_song_to_tswf(args)}\r\n"]
       elsif cmd.casecmp('HOWDY').zero?
         ["PRIVMSG #{reply_to} :Howdy, #{rt}.\r\n"]
+      else
+        ["PRIVMSG #{reply_to} :Sorry, I don't know that command, and I'm not going to tell you the commands that I do know because I don't respect you.\r\n"]
       end
     end
   end
