@@ -39,6 +39,6 @@ Gem::Specification.new do |s|
 
   s.test_files    = Dir['test/**/*']
   s.require_path  = ['lib']
-  s.add_runtime_dependency 'vbot', '~> 0.2.1'
+  s.add_runtime_dependency 'vbot', '~> 0.3.1'
   s.add_runtime_dependency 'nokogiri', '~> 1.6', '>= 1.6.8'
 end
