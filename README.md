@@ -7,6 +7,7 @@ This is an IRC bot written in Ruby that performs various functions.
 * Getting started
     * Installation
     * Usage
+    * Running as a Systemd Service
 * Contributing
     * Code Style
     * Documentation
@@ -55,7 +56,7 @@ verboten find-books --filetype=epub java
 verboten play https://invidio.us/watch?v=XIkPyUecsnI
 ```
 
-## Setting Up Systemd Control
+### Running as a Systemd Service
 In order to set up the bot to execute as a service, you'll need to create a wrapper and gemset. After you have installed the `verboten` gem and created a config file,
 execute the following commands to generate a wrapper and gemset, replacing the ruby version with whatever ruby version you installed the gem under.
 ```
