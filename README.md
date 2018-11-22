@@ -55,6 +55,31 @@ verboten find-books --filetype=epub java
 verboten play https://invidio.us/watch?v=XIkPyUecsnI
 ```
 
+## Setting Up Systemd Control
+In order to set up the bot to execute as a service, you'll need to create a wrapper and gemset. After you have installed the `verboten` gem and created a config file,
+execute the following commands to generate a wrapper and gemset, replacing the ruby version with whatever ruby version you installed the gem under.
+```
+rvm alias create verboten ruby-2.5.1@verboten
+rvm ruby-2.5.1 do rvm gemset create verboten
+rvm wrapper verboten --no-links verboten
+```
+
+Create a `.service` file (example: `verboten.service`) in the /etc/systemd/system directory. Modify the below service file to fit your needs.
+Important: replace the `/home/d3d1rty/.rvm` substring of the `ExecStart` directive with the output of `echo $rvm_path`; also, replace the value of
+the `User` directive with your username on the server as well as whatever you would like to use as the `Description` directive.
+```
+[Unit]
+Description="verboten IRC bot on #dailyprog Rizon"
+
+[Service]
+User=d3d1rty
+ExecStart=/home/d3d1rty/.rvm/wrappers/verboten/verboten -r
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+```
+
 ## Contributing
 ### Code Style
 To keep a consistent code style, it is recommended to use
@@ -100,13 +125,15 @@ rake rdoc
 ```
 
 ### Testing
-Integration tests should be written for all classes and methods. The test suite
-can be run manually `bundle exec rake test` or automatically using guard `bundle exec guard`.
+Integration tests should be written for all classes and methods.
 
 ## TODO
 * Make tests...
 
 ## Changelog
+### 2018-11-21
+* Included instructions for running as a Systemd service.
+
 ### 2018-11-07
 * Upgraded to version `0.2.0`.
 * Added `play` command.
