@@ -48,14 +48,14 @@ module Verboten
       end
 
       if rt.casecmp('opuntia').zero?
-        return ["PRIVMSG #{reply_to} :#{'🖕'}\r\n"]
+        return ["PRIVMSG #{reply_to} :#{'I refuse. 😑'}\r\n"]
       end
 
-      return ["PRIVMSG #{reply_to} :#{'No command given.'}\r\n"] if cmd.nil?
+      return ["PRIVMSG #{reply_to} :#{'No command given. 😕'}\r\n"] if cmd.nil?
 
       if cmd.casecmp('FIND-BOOKS').zero?
         books = search_for_books(args)
-        return ["PRIVMSG #{reply_to} :#{'No books were found for that search term.'}\r\n"] if books.count.zero?
+        return ["PRIVMSG #{reply_to} :#{'No books were found for that search term. 😵'}\r\n"] if books.count.zero?
         messages = []
         books.each do |book|
           messages.push(["PRIVMSG #{reply_to} :#{book}\r\n"])
