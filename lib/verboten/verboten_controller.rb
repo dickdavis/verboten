@@ -47,6 +47,10 @@ module Verboten
         reply_to = chan
       end
 
+      if rt.casecmp('opuntia').zero?
+        return ["PRIVMSG #{reply_to} :#{'🖕'}\r\n"]
+      end
+
       return ["PRIVMSG #{reply_to} :#{'No command given.'}\r\n"] if cmd.nil?
 
       if cmd.casecmp('FIND-BOOKS').zero?
