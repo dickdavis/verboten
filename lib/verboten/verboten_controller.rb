@@ -65,7 +65,7 @@ module Verboten
         args[0] = cmd if cmd.include?('http') || cmd.casecmp('despacito').zero?
         ["PRIVMSG #{reply_to} :#{send_song_to_tswf(args)}\r\n"]
       elsif cmd.casecmp('HOWDY').zero?
-        ["PRIVMSG #{reply_to} :Howdy, #{rt}.\r\n"]
+        ["PRIVMSG #{reply_to} :Howdy, #{rt}. 🤠\r\n"]
       else
         ["PRIVMSG #{reply_to} :I do not recognize that command. Check here for information on what I can do: https://github.com/d3d1rty/verboten.\r\n"]
       end
