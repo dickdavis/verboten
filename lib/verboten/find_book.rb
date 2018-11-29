@@ -41,6 +41,9 @@ module Verboten
       else
         term = args[0]
       end
+
+      return ['No search term given. 😕'] if term.nil?
+
       page = Nokogiri::HTML(open(LIBRARY+'humble/'))
       links = page.css('a')
       filtered_links = []
